@@ -1,25 +1,26 @@
-import { useState } from 'react'
-import withResults from '../examples/find-results.json'
-import withNotResults from '../examples/not-results.json'
+import { useRef, useState } from 'react'
+import { searchMovies } from '../services/getMovies'
 
 export function useMovies({ search }) {
-   const [responseMovies, setResponseMovies] = useState([])
-   const movies = responseMovies.Search
+   const [movies, setMovies] = useState([])
+   const [loading, setLoading] = useState(false)
+   const [error, setError] = useState(null)
+   const previousSearch = useRef(search)
 
-   const mappedMovies = movies?.map(movie => ({
-      id: movie.imdbID,
-      title: movie.Title,
-      year: movie.Year,
-      poster: movie.Poster
-   }))
-
-   const getMovies = () => {
-      if (search) {
-         setResponseMovies(withResults)
-      } else {
-         setResponseMovies(withNotResults)
+   const getMovies = async () => {
+      if (search === previousSearch.current) return
+      try {
+         setLoading(true)
+         setError(null)
+         const newMovies = await searchMovies({ search })
+         previousSearch.current = search
+         setMovies(newMovies)
+      } catch (error) {
+         setError(error.message)
+      } finally {
+         setLoading(false)
       }
    }
 
-   return { movies: mappedMovies, getMovies }
+   return { movies, getMovies, loading, error }
 }

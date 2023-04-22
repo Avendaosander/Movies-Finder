@@ -4,7 +4,7 @@ import { useSearch } from './hooks/useSearch'
 
 function App() {
    const { search, setSearch, error } = useSearch()
-   const { movies, getMovies } = useMovies({ search })
+   const { movies, getMovies, loading } = useMovies({ search })
 
    const handleSubmit = e => {
       e.preventDefault()
@@ -38,7 +38,7 @@ function App() {
                   value={search}
                   onChange={handleChange}
                   id='query'
-                  className='bg-black/30 rounded-lg px-3 py-1 w-3/6 ring-2 focus:outline-none focus:ring-2 focus:ring-yellow-400/60'
+                  className={`bg-black/30 rounded-lg px-3 py-1 w-3/6 ring-2 ${error ? 'ring-red-600 focus:ring-red-600/80' : 'focus:ring-yellow-400/60'} focus:outline-none`}
                   placeholder='Avengers, Fats & Furious 9, Godzilla...'
                   autoFocus
                />
@@ -47,13 +47,20 @@ function App() {
                </button>
             </form>
             {error && (
-               <p className='px-3 py-1 ring-1 ring-red-600 bg-red-600/50 rounded-md w-2/6 mx-auto mb-5'>
+               <p className='relative px-3 py-1 ring-1 ring-red-600 bg-red-600/50 rounded-md w-2/6 mx-auto mb-5'>
                   {error}
+                  <button className='font-bold absolute right-3'>X</button>
                </p>
             )}
 
             <section className='flex justify-center w-full container mx-auto pb-20'>
-               <Movies movies={movies} />
+               {loading ? (
+                  <div
+                     className='text-yellow-400 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent'
+                  ></div>
+               ) : (
+                  <Movies movies={movies} />
+               )}
             </section>
          </main>
       </div>

@@ -1,18 +1,35 @@
+import { useCallback, useState } from 'react'
 import { Movies } from './components/Movies'
 import { useMovies } from './hooks/useMovies'
 import { useSearch } from './hooks/useSearch'
+import debounce from 'just-debounce-it'
 
 function App() {
+   const [sort, setSort] = useState(false)
    const { search, setSearch, error } = useSearch()
-   const { movies, getMovies, loading } = useMovies({ search })
+   const { movies, getMovies, loading } = useMovies({ search, sort })
+
+   const debouncedMovies = useCallback(
+      debounce(search => {
+         getMovies({ search })
+      }, 300),
+     [getMovies],
+   )
+   
 
    const handleSubmit = e => {
       e.preventDefault()
-      getMovies()
+      getMovies({ search })
    }
 
    const handleChange = e => {
-      setSearch(e.target.value)
+      const newSearch = e.target.value.trim()
+      setSearch(newSearch)
+      debouncedMovies(newSearch)
+   }
+
+   const handleSort = () => {
+      setSort(!sort)
    }
 
    return (
@@ -42,6 +59,14 @@ function App() {
                   placeholder='Avengers, Fats & Furious 9, Godzilla...'
                   autoFocus
                />
+               <label htmlFor="title">Sort by title</label>
+               <input
+                  type='checkbox'
+                  name='title'
+                  id='title'
+                  onChange={handleSort}
+                  checked={sort}
+               />
                <button className='py-1 px-3 bg-black/30 ring-2 hover:ring-yellow-400/60 rounded-lg'>
                   Search
                </button>
@@ -55,9 +80,7 @@ function App() {
 
             <section className='flex justify-center w-full container mx-auto pb-20'>
                {loading ? (
-                  <div
-                     className='text-yellow-400 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent'
-                  ></div>
+                  <div className='text-yellow-400 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent'></div>
                ) : (
                   <Movies movies={movies} />
                )}

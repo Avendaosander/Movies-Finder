@@ -41,12 +41,12 @@ function App() {
    return (
       <div className='bg-blue-950 w-full min-h-screen text-center'>
          <header className='flex items-center justify-center h-20 w-full bg-black/10 shadow-blue-800/50 shadow-lg'>
-            <h1 className='text-4xl'>Movie Finder</h1>
+            <h1 className='text-2xl sm:text-4xl'>Movie Finder</h1>
          </header>
 
-         <main>
+         <main className='mx-5 sm:mx-10'>
             <form
-               className='flex justify-center items-center gap-5 w-full my-10'
+               className='flex flex-col sm:flex-row justify-center items-center gap-5 w-full my-10'
                onSubmit={handleSubmit}
             >
                <label
@@ -61,24 +61,26 @@ function App() {
                   value={search}
                   onChange={handleChange}
                   id='query'
-                  className={`bg-black/30 rounded-lg px-3 py-1 w-3/6 ring-2 ${error ? 'ring-red-600 focus:ring-red-600/80' : 'focus:ring-yellow-400/60'} focus:outline-none`}
-                  placeholder='Avengers, Fats & Furious 9, Godzilla...'
+                  className={`bg-black/30 rounded-lg text-sm sm:text-base px-3 py-1 w-3/6 ring-2 ${error ? 'ring-red-600 focus:ring-red-600/80' : 'focus:ring-yellow-400/60'} focus:outline-none`}
+                  placeholder='Avengers, Fast & Furious 9, Godzilla...'
                   autoFocus
                />
-               <label htmlFor="title">Sort by title</label>
-               <input
-                  type='checkbox'
-                  name='title'
-                  id='title'
-                  onChange={handleSort}
-                  checked={sort}
-               />
-               <button className='py-1 px-3 bg-black/30 ring-2 hover:ring-yellow-400/60 rounded-lg'>
+               <div className='flex gap-3'>
+                  <label htmlFor="title" className='text-xs sm:text-base'>Sort by title</label>
+                  <input
+                     type='checkbox'
+                     name='title'
+                     id='title'
+                     onChange={handleSort}
+                     checked={sort}
+                  />
+               </div>
+               <button className='py-1 px-3 bg-black/30 text-sm sm:text-base ring-2 hover:ring-yellow-400/60 rounded-lg'>
                   Search
                </button>
             </form>
             {alertSearchError && (
-               <p className='relative px-3 py-1 ring-1 ring-red-600 bg-red-600/50 rounded-md w-2/6 mx-auto mb-5'>
+               <p className='relative text-sm sm:text-base w-full px-5 py-1 ring-1 ring-red-600 bg-red-600/50 rounded-md min-[400px]:w-4/6 md:w-3/6 mx-auto mb-5'>
                   {error}
                   <button className='font-bold absolute right-3' onClick={closeSearchError}>X</button>
                </p>

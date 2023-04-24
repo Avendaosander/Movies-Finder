@@ -13,7 +13,7 @@ function ListOfMovies({ movies }) {
 }
 
 function NoMovies({ movies }) {
-   const hasError = movies !== null && movies?.length !== 0
+   const hasError = movies?.length !== 0
    return (
       hasError ? (
          <p>{movies.Error}</p>

@@ -14,7 +14,7 @@ export function useMovies({ search, sort }) {
          setError(null)
          const newMovies = await searchMovies({ search })
          previousSearch.current = search
-         setMovies(newMovies)
+         setMovies(newMovies === null ? [] : newMovies)
       } catch (error) {
          setError(error.message)
       } finally {

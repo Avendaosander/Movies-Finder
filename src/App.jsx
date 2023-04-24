@@ -6,7 +6,7 @@ import debounce from 'just-debounce-it'
 
 function App() {
    const [sort, setSort] = useState(false)
-   const { search, setSearch, error } = useSearch()
+   const { search, setSearch, error, alertSearchError, setAlertSearchError } = useSearch()
    const { movies, getMovies, loading } = useMovies({ search, sort })
 
    const debouncedMovies = useCallback(
@@ -32,6 +32,10 @@ function App() {
 
    const handleSort = () => {
       setSort(!sort)
+   }
+
+   const closeSearchError = () => {
+      setAlertSearchError(false)
    }
 
    return (
@@ -73,10 +77,10 @@ function App() {
                   Search
                </button>
             </form>
-            {error && (
+            {alertSearchError && (
                <p className='relative px-3 py-1 ring-1 ring-red-600 bg-red-600/50 rounded-md w-2/6 mx-auto mb-5'>
                   {error}
-                  <button className='font-bold absolute right-3'>X</button>
+                  <button className='font-bold absolute right-3' onClick={closeSearchError}>X</button>
                </p>
             )}
 

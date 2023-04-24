@@ -23,10 +23,12 @@ function App() {
    }
 
    const handleChange = e => {
-      const newSearch = e.target.value.trim()
-      setSearch(newSearch)
-      if (!error) {
-         debouncedMovies(newSearch)
+      const newSearch = e.target.value
+      if (!newSearch.startsWith(' ')) {
+         setSearch(newSearch.trim())
+         if (!error) {
+            debouncedMovies(newSearch)
+         }
       }
    }
 

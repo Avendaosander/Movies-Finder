@@ -25,7 +25,9 @@ function App() {
    const handleChange = e => {
       const newSearch = e.target.value.trim()
       setSearch(newSearch)
-      debouncedMovies(newSearch)
+      if (!error) {
+         debouncedMovies(newSearch)
+      }
    }
 
    const handleSort = () => {

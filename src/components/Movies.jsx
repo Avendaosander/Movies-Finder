@@ -12,9 +12,14 @@ function ListOfMovies({ movies }) {
    )
 }
 
-function NoMovies() {
+function NoMovies({ movies }) {
+   const hasError = movies !== null && movies?.length !== 0
    return (
-      <p>No se encontraron resultados para esta busqueda</p>
+      hasError ? (
+         <p>{movies.Error}</p>
+      ) : (
+         <p>Find the movies you are looking for</p>
+      )
    )
 }
 
@@ -23,6 +28,6 @@ export function Movies({ movies }) {
    return (
       hasMovies
          ? <ListOfMovies movies={movies}/>
-         : <NoMovies/>
+         : <NoMovies movies={movies}/>
    )
 }
